@@ -2,67 +2,56 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GAETO COMERCIOS - Catálogo</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', sans-serif; background: #eef2f5; padding: 20px; padding-bottom: 160px; }
-        .encabezado { text-align: center; background: white; border-radius: 40px; padding: 15px; margin-bottom: 20px; position: relative; }
-        .logo { max-width: 250px; width: 80%; cursor: pointer; }
-        .badge-admin { position: absolute; bottom: 5px; right: 15px; background: #ff9800; color: #000; font-size: 10px; padding: 2px 8px; border-radius: 20px; display: none; }
-        /* BANNER DE ENTREGAS (corregido) */
-        .banner-entregas {
-            background: #1e2a3e;
-            color: #ffd966;
-            text-align: center;
-            padding: 10px;
-            border-radius: 60px;
-            margin-bottom: 20px;
-            font-size: 13px;
-            font-weight: bold;
-            line-height: 1.4;
-        }
-        .toolbar { background: #1e2a3e; padding: 12px; border-radius: 60px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 25px; }
-        .toolbar button, .toolbar label { background: #2d3a4e; border: none; padding: 8px 16px; border-radius: 40px; color: white; cursor: pointer; font-size: 13px; }
-        .toolbar .danger { background: #b91c1c; }
-        .filtro-categorias { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 25px; }
-        .filtro-btn { background: #e2e8f0; border: none; padding: 8px 20px; border-radius: 40px; font-weight: bold; cursor: pointer; }
-        .filtro-btn.activo { background: #002b5c; color: white; }
-        .producto { background: white; border-radius: 28px; margin-bottom: 30px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.08); position: relative; }
-        .etiqueta-promo { position: absolute; top: 15px; right: 15px; background: #e11d48; color: white; padding: 6px 12px; border-radius: 50px; font-weight: bold; font-size: 12px; }
-        .vigencia { font-size: 10px; display: block; margin-top: 3px; }
-        .codigo-producto { font-size: 12px; color: #666; margin-bottom: 5px; font-family: monospace; }
-        .imagen-area { width: 100%; background: white; display: flex; justify-content: center; align-items: center; height: 250px; border-bottom: 1px solid #e2e8f0; }
-        .imagen-area img { max-width: 100%; max-height: 100%; object-fit: contain; }
-        .sin-imagen { color: #94a3b8; text-align: center; }
-        .info { padding: 20px; }
-        .titulo { font-size: 1.4rem; font-weight: bold; }
-        .descripcion { color: #334155; margin: 8px 0; }
-        .precio { font-size: 1.7rem; font-weight: bold; color: #002b5c; margin: 10px 0; }
-        .precio-antes { text-decoration: line-through; font-size: 1rem; color: #888; margin-right: 8px; }
-        .categoria-texto { display: inline-block; background: #e2e8f0; padding: 4px 12px; border-radius: 20px; font-size: 11px; }
-        .acciones { display: flex; gap: 10px; margin: 15px 0; flex-wrap: wrap; }
-        .acciones input { width: 70px; padding: 8px; border-radius: 40px; border: 1px solid #ccc; text-align: center; }
-        .btn-agregar { background: #ff9800; color: white; border: none; padding: 8px 15px; border-radius: 40px; cursor: pointer; font-weight: bold; flex: 1; }
-        .btn-wa { background: #25d366; color: white; text-decoration: none; text-align: center; padding: 8px 15px; border-radius: 40px; font-weight: bold; flex: 1; }
-        .editor-area { margin-top: 20px; border-top: 1px solid #ddd; padding-top: 15px; display: none; }
-        .modo-admin .editor-area { display: block; }
-        .campo-row { margin-bottom: 12px; }
-        .campo-row label { font-weight: bold; display: block; margin-bottom: 5px; font-size: 12px; }
-        .campo-row input { width: 100%; padding: 10px; border-radius: 30px; border: 1px solid #ccc; }
-        .btn-guardar { background: #2563eb; color: white; border: none; padding: 10px; border-radius: 40px; width: 100%; margin-bottom: 8px; cursor: pointer; }
-        .btn-subir-archivo { background: #16a34a; }
-        .botones-edicion { display: flex; gap: 10px; margin-top: 10px; }
-        .btn-editar, .btn-eliminar { flex: 1; padding: 8px; border-radius: 40px; border: none; color: white; cursor: pointer; }
-        .btn-editar { background: #334155; }
-        .btn-eliminar { background: #b91c1c; }
-        .modo-admin .toolbar { display: flex; }
-        .modo-cliente .toolbar { display: none; }
-        .carrito-panel { position: fixed; bottom: 0; left: 0; right: 0; background: #1e293b; color: white; padding: 15px; border-radius: 24px 24px 0 0; max-height: 55vh; overflow-y: auto; z-index: 200; box-shadow: 0 -5px 15px rgba(0,0,0,0.3); }
-        .carrito-item { display: flex; justify-content: space-between; border-bottom: 1px solid #475569; padding: 8px 0; }
-        .total-carrito { text-align: right; font-size: 1.3rem; margin: 10px 0; font-weight: bold; }
-        .telefono-carrito { background: #25d366; color: #000; text-align: center; padding: 12px; border-radius: 60px; margin-top: 10px; font-weight: bold; text-decoration: none; display: block; }
-        @media (max-width: 600px) { .imagen-area { height: 200px; } .banner-entregas { font-size: 11px; } }
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Segoe UI',sans-serif;background:#eef2f5;padding:20px;padding-bottom:160px}
+        .encabezado{text-align:center;background:white;border-radius:40px;padding:15px;margin-bottom:20px;position:relative}
+        .logo{max-width:250px;width:80%;cursor:pointer}
+        .badge-admin{position:absolute;bottom:5px;right:15px;background:#ff9800;color:#000;font-size:10px;padding:2px 8px;border-radius:20px;display:none}
+        .banner{background:#1e2a3e;color:#ffd966;text-align:center;padding:10px;border-radius:60px;margin-bottom:20px;font-size:13px}
+        .toolbar{background:#1e2a3e;padding:12px;border-radius:60px;display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:25px}
+        .toolbar button,.toolbar label{background:#2d3a4e;border:none;padding:8px 16px;border-radius:40px;color:white;cursor:pointer;font-size:13px}
+        .toolbar .danger{background:#b91c1c}
+        .filtro-categorias{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-bottom:25px}
+        .filtro-btn{background:#e2e8f0;border:none;padding:8px 20px;border-radius:40px;font-weight:bold;cursor:pointer}
+        .filtro-btn.activo{background:#002b5c;color:white}
+        .producto{background:white;border-radius:28px;margin-bottom:30px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,0.08);position:relative}
+        .etiqueta-promo{position:absolute;top:15px;right:15px;background:#e11d48;color:white;padding:6px 12px;border-radius:50px;font-weight:bold;font-size:12px}
+        .vigencia{font-size:10px;display:block;margin-top:3px}
+        .codigo{font-size:12px;color:#666;margin-bottom:5px;font-family:monospace}
+        .imagen-area{width:100%;background:white;display:flex;justify-content:center;align-items:center;height:250px;border-bottom:1px solid #e2e8f0}
+        .imagen-area img{max-width:100%;max-height:100%;object-fit:contain}
+        .sin-imagen{color:#94a3b8;text-align:center}
+        .info{padding:20px}
+        .titulo{font-size:1.4rem;font-weight:bold}
+        .descripcion{color:#334155;margin:8px 0}
+        .precio{font-size:1.7rem;font-weight:bold;color:#002b5c;margin:10px 0}
+        .precio-antes{text-decoration:line-through;font-size:1rem;color:#888;margin-right:8px}
+        .categoria-texto{display:inline-block;background:#e2e8f0;padding:4px 12px;border-radius:20px;font-size:11px}
+        .acciones{display:flex;gap:10px;margin:15px 0;flex-wrap:wrap}
+        .acciones input{width:70px;padding:8px;border-radius:40px;border:1px solid #ccc;text-align:center}
+        .btn-agregar{background:#ff9800;color:white;border:none;padding:8px 15px;border-radius:40px;cursor:pointer;font-weight:bold;flex:1}
+        .btn-wa{background:#25d366;color:white;text-decoration:none;text-align:center;padding:8px 15px;border-radius:40px;font-weight:bold;flex:1}
+        .editor-area{margin-top:20px;border-top:1px solid #ddd;padding-top:15px;display:none}
+        .modo-admin .editor-area{display:block}
+        .campo-row{margin-bottom:12px}
+        .campo-row label{font-weight:bold;display:block;margin-bottom:5px;font-size:12px}
+        .campo-row input{width:100%;padding:10px;border-radius:30px;border:1px solid #ccc}
+        .btn-guardar{background:#2563eb;color:white;border:none;padding:10px;border-radius:40px;width:100%;margin-bottom:8px;cursor:pointer}
+        .btn-subir-archivo{background:#16a34a}
+        .botones-edicion{display:flex;gap:10px;margin-top:10px}
+        .btn-editar,.btn-eliminar{flex:1;padding:8px;border-radius:40px;border:none;color:white;cursor:pointer}
+        .btn-editar{background:#334155}
+        .btn-eliminar{background:#b91c1c}
+        .modo-admin .toolbar{display:flex}
+        .modo-cliente .toolbar{display:none}
+        .carrito-panel{position:fixed;bottom:0;left:0;right:0;background:#1e293b;color:white;padding:15px;border-radius:24px 24px 0 0;max-height:50vh;overflow-y:auto}
+        .carrito-item{display:flex;justify-content:space-between;border-bottom:1px solid #475569;padding:8px 0}
+        .total-carrito{text-align:right;font-size:1.3rem;margin:10px 0;font-weight:bold}
+        .telefono-carrito{background:#25d366;color:#000;text-align:center;padding:12px;border-radius:60px;margin-top:10px;font-weight:bold;text-decoration:none;display:block}
+        @media (max-width:600px){.imagen-area{height:200px}.banner{font-size:11px}}
     </style>
 </head>
 <body>
@@ -70,13 +59,10 @@
     <img src="https://i.postimg.cc/0y0PPD1M/GAETO-COMERCIOS-LOGO.png" class="logo" id="logoAdmin">
     <div class="badge-admin" id="badgeAdmin">🔧 ADMIN</div>
 </div>
-
-<!-- BANNER DE ENTREGAS (ya está de vuelta) -->
-<div class="banner-entregas">
+<div class="banner">
     <div>📅 PEDIDOS: LUNES, MARTES, MIÉRCOLES</div>
     <div>🚚 ENTREGAS: VIERNES Y SÁBADOS 9am-6:30pm</div>
 </div>
-
 <div class="toolbar" id="toolbar">
     <button id="toggleModoBtn">👁️ VER COMO CLIENTE</button>
     <button id="agregarProductoBtn">➕ AGREGAR PRODUCTO</button>
@@ -84,129 +70,44 @@
     <label>📂 IMPORTAR JSON: <input type="file" id="importarInput" accept=".json"></label>
     <button id="reiniciarBtn" class="danger">⚠️ REINICIAR</button>
 </div>
-
 <div class="filtro-categorias" id="filtroCategorias"></div>
 <div id="contenedorProductos"></div>
-
 <div id="carritoPanel" class="carrito-panel">
-    <div style="display: flex; justify-content: space-between;"><strong>🛒 MI PEDIDO</strong><button id="vaciarCarritoBtn" style="background:#b91c1c; border:none; color:white; padding:4px 12px; border-radius:20px;">Vaciar</button></div>
+    <div style="display:flex;justify-content:space-between"><strong>🛒 MI PEDIDO</strong><button id="vaciarCarritoBtn" style="background:#b91c1c;border:none;color:white;padding:4px 12px;border-radius:20px">Vaciar</button></div>
     <div id="carritoLista">🛍️ Vacío</div>
     <div id="totalCarrito" class="total-carrito">Total: $0.00</div>
-    <button id="enviarPedidoBtn" style="background:#25d366; width:100%; padding:12px; border:none; border-radius:40px; font-weight:bold;">📲 ENVIAR PEDIDO POR WHATSAPP</button>
-    <a href="https://wa.me/522282877441" target="_blank" class="telefono-carrito">📞 WhatsApp directo: 228 287 7441</a>
+    <button id="enviarPedidoBtn" style="background:#25d366;width:100%;padding:12px;border:none;border-radius:40px;font-weight:bold">📲 ENVIAR PEDIDO</button>
+    <a href="https://wa.me/522282877441" target="_blank" class="telefono-carrito">📞 WhatsApp: 228 287 7441</a>
 </div>
-
 <script>
-    const ADMIN_PASSWORD = "1310";
-    let productos = [
-        { id: "1", codigo: "CUAD-001", categoria: "Papelería", titulo: "CUADERNO PROFESIONAL", descripcion: "Tapa dura, 200 hojas", precioLista: 180, descuento: 10, vigencia: "2026-07-15", unidad: "PIEZA", telefono: "522282877441", imagen: "https://images.pexels.com/photos/210309/pexels-photo-210309.jpeg?auto=compress&cs=tinysrgb&w=600" },
-        { id: "2", codigo: "TAZA-002", categoria: "Regalos", titulo: "TAZA PERSONALIZADA", descripcion: "Cerámica 350ml", precioLista: 120, descuento: 0, vigencia: "", unidad: "PIEZA", telefono: "522282877441", imagen: "https://images.pexels.com/photos/1986124/pexels-photo-1986124.jpeg?auto=compress&cs=tinysrgb&w=600" },
-        { id: "3", codigo: "TOAL-003", categoria: "Hogar", titulo: "TOALLAS PREMIUM", descripcion: "Juego 3 piezas", precioLista: 450, descuento: 15, vigencia: "2026-06-30", unidad: "JUEGO", telefono: "522282877441", imagen: "https://images.pexels.com/photos/4289419/pexels-photo-4289419.jpeg?auto=compress&cs=tinysrgb&w=600" }
-    ];
-    let carrito = [];
-    let modoAdmin = false;
-    let categoriaActiva = "TODOS";
-
-    function guardarProductosEnLocal() { localStorage.setItem('productos_gaeto', JSON.stringify(productos)); }
-    function guardarCarritoEnLocal() { localStorage.setItem('carrito_gaeto', JSON.stringify(carrito)); }
-    function cargarDatosLocales() {
-        let p = localStorage.getItem('productos_gaeto');
-        let c = localStorage.getItem('carrito_gaeto');
-        if (p) productos = JSON.parse(p);
-        if (c) carrito = JSON.parse(c);
-    }
-    function precioFinal(p) { return p.precioLista - (p.precioLista * (p.descuento / 100)); }
-    function formatearFecha(f) { if (!f) return ""; let partes = f.split('-'); return partes.length===3 ? `${partes[2]}/${partes[1]}/${partes[0]}` : f; }
-    function obtenerCategorias() { return [...new Set(productos.map(p=>p.categoria).filter(c=>c && c.trim()!=""))]; }
-
-    function renderizarFiltros() {
-        let cats = ["TODOS", ...obtenerCategorias()];
-        let html = cats.map(c => `<button class="filtro-btn ${categoriaActiva===c?'activo':''}" data-categoria="${c}">${c}</button>`).join('');
-        document.getElementById('filtroCategorias').innerHTML = html;
-        document.querySelectorAll('.filtro-btn').forEach(btn => btn.onclick = () => { categoriaActiva = btn.dataset.categoria; renderizarFiltros(); renderizarProductos(); });
-    }
-
-    function renderizarProductos() {
-        let filtrados = categoriaActiva === "TODOS" ? productos : productos.filter(p => p.categoria === categoriaActiva);
-        const contenedor = document.getElementById('contenedorProductos');
-        contenedor.innerHTML = '';
-        if(filtrados.length === 0) { contenedor.innerHTML = '<div style="padding:40px; text-align:center;">📭 No hay productos.</div>'; return; }
-        for(let p of filtrados) {
-            const final = precioFinal(p);
-            const tieneDesc = p.descuento > 0;
-            const imgHtml = p.imagen ? `<img src="${p.imagen}">` : `<div class="sin-imagen">📷 Sin imagen</div>`;
-            const fechaVig = p.vigencia ? formatearFecha(p.vigencia) : "";
-            const promoTag = tieneDesc ? `<div class="etiqueta-promo">🔥 ${p.descuento}% OFF ${fechaVig ? `<span class="vigencia">Válido hasta: ${fechaVig}</span>` : ''}</div>` : '';
-            const div = document.createElement('div');
-            div.className = 'producto';
-            div.innerHTML = `
-                ${promoTag}
-                <div class="imagen-area">${imgHtml}</div>
-                <div class="info">
-                    <div class="codigo-producto">📦 ${p.codigo || 'Sin código'}</div>
-                    <div class="titulo">${p.titulo}</div>
-                    <div class="descripcion">${p.descripcion}</div>
-                    <div class="precio">${tieneDesc ? `<span class="precio-antes">$${p.precioLista.toFixed(2)}</span>` : ''}$${final.toFixed(2)} / ${p.unidad}</div>
-                    <div class="categoria-texto">📁 ${p.categoria || 'General'}</div>
-                    <div class="acciones">
-                        <input type="number" id="cant-${p.id}" value="1" min="1">
-                        <button class="agregar-carrito" data-id="${p.id}">➕ Agregar</button>
-                        <a href="https://wa.me/${p.telefono}?text=${encodeURIComponent(`Hola, me interesa: ${p.titulo} - $${final.toFixed(2)}`)}" target="_blank" class="btn-wa">💬 WhatsApp</a>
-                    </div>
-                    <div class="editor-area">
-                        <div class="campo-row"><label>🔢 Código:</label><input type="text" id="codigoInput-${p.id}" value="${p.codigo || ''}"></div>
-                        <div class="campo-row"><label>📂 Categoría:</label><input type="text" id="categoriaInput-${p.id}" value="${p.categoria || ''}"></div>
-                        <div class="campo-row"><label>🏷️ % Promoción:</label><input type="number" id="descuentoInput-${p.id}" value="${p.descuento}" min="0" max="100"></div>
-                        <div class="campo-row"><label>📅 Vigencia (YYYY-MM-DD):</label><input type="date" id="vigenciaInput-${p.id}" value="${p.vigencia || ''}"></div>
-                        <div class="campo-row"><label>🖼️ URL imagen:</label><input type="text" id="urlInput-${p.id}" value="${p.imagen || ''}"></div>
-                        <button class="btn-guardar" data-id="${p.id}">💾 GUARDAR</button>
-                        <button class="btn-subir-archivo" data-id="${p.id}">📂 Subir imagen</button>
-                        <div class="botones-edicion">
-                            <button class="btn-editar" data-id="${p.id}">✏️ Editar otros</button>
-                            <button class="btn-eliminar" data-id="${p.id}">🗑 Eliminar</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            contenedor.appendChild(div);
-        }
-        document.querySelectorAll('.agregar-carrito').forEach(btn => btn.onclick = () => { let id = btn.dataset.id; let cant = parseInt(document.getElementById(`cant-${id}`).value)||1; agregarAlCarrito(id, cant); });
-        if(modoAdmin) {
-            document.querySelectorAll('.btn-guardar').forEach(btn => btn.onclick = () => { let id=btn.dataset.id; let prod=productos.find(p=>p.id===id); if(prod){ prod.codigo=document.getElementById(`codigoInput-${id}`)?.value.trim()||''; prod.categoria=document.getElementById(`categoriaInput-${id}`)?.value.trim()||'General'; prod.descuento=parseFloat(document.getElementById(`descuentoInput-${id}`)?.value)||0; prod.vigencia=document.getElementById(`vigenciaInput-${id}`)?.value||''; prod.imagen=document.getElementById(`urlInput-${id}`)?.value.trim()||''; guardarProductosEnLocal(); renderizarFiltros(); renderizarProductos(); renderizarCarrito(); } });
-            document.querySelectorAll('.btn-subir-archivo').forEach(btn => btn.onclick = () => { let id=btn.dataset.id; let input=document.createElement('input'); input.type='file'; input.accept='image/*'; input.onchange=e=>{ let file=e.target.files[0]; if(file){ let reader=new FileReader(); reader.onload=ev=>{ let base64=ev.target.result; let prod=productos.find(p=>p.id===id); if(prod) prod.imagen=base64; guardarProductosEnLocal(); renderizarProductos(); renderizarCarrito(); }; reader.readAsDataURL(file); } }; input.click(); });
-            document.querySelectorAll('.btn-editar').forEach(btn => btn.onclick = () => { let id=btn.dataset.id; let prod=productos.find(p=>p.id===id); if(!prod) return; prod.titulo=prompt("Título:",prod.titulo)||prod.titulo; prod.descripcion=prompt("Descripción:",prod.descripcion)||prod.descripcion; let np=parseFloat(prompt("Precio lista:",prod.precioLista)); if(!isNaN(np)) prod.precioLista=np; prod.unidad=prompt("Unidad:",prod.unidad)||prod.unidad; guardarProductosEnLocal(); renderizarProductos(); renderizarCarrito(); });
-            document.querySelectorAll('.btn-eliminar').forEach(btn => btn.onclick = () => { if(confirm("¿Eliminar?")){ let id=btn.dataset.id; productos=productos.filter(p=>p.id!==id); carrito=carrito.filter(c=>c.id!==id); guardarProductosEnLocal(); guardarCarritoEnLocal(); renderizarFiltros(); renderizarProductos(); renderizarCarrito(); } });
-        }
-    }
-
-    function agregarAlCarrito(id,cantidad){ let exist=carrito.find(c=>c.id===id); if(exist) exist.cantidad+=cantidad; else carrito.push({id,cantidad}); guardarCarritoEnLocal(); renderizarCarrito(); }
-    function renderizarCarrito(){
-        const lista=document.getElementById('carritoLista'); const totalDiv=document.getElementById('totalCarrito');
-        if(carrito.length===0){ lista.innerHTML='<div style="padding:10px;">🛍️ Carrito vacío</div>'; totalDiv.innerHTML='Total: $0.00'; return; }
-        let total=0, html='';
-        for(let item of carrito){ const prod=productos.find(p=>p.id===item.id); if(!prod) continue; const final=precioFinal(prod); const subtotal=final*item.cantidad; total+=subtotal; html+=`<div class="carrito-item"><span><strong>${prod.titulo}</strong> x${item.cantidad}<br><span style="font-size:10px;">Cód: ${prod.codigo||'N/A'}</span></span><span>$${subtotal.toFixed(2)} <button class="quitar-item" data-id="${item.id}">🗑</button></span></div>`; }
-        lista.innerHTML=html; totalDiv.innerHTML=`Total: $${total.toFixed(2)}`;
-        document.querySelectorAll('.quitar-item').forEach(btn=>btn.onclick=()=>{ carrito=carrito.filter(i=>i.id!==btn.dataset.id); guardarCarritoEnLocal(); renderizarCarrito(); });
-    }
-    function enviarPedido(){
-        if(carrito.length===0){ alert("Carrito vacío"); return; }
-        let msg="🛒 *MI PEDIDO GAETO:*\n\n"; let total=0;
-        for(let item of carrito){ const prod=productos.find(p=>p.id===item.id); if(!prod) continue; const final=precioFinal(prod); const subtotal=final*item.cantidad; total+=subtotal; msg+=`📦 ${prod.titulo}\n   Código: ${prod.codigo||'N/A'}\n   Cantidad: ${item.cantidad} ${prod.unidad}\n   Precio unit: $${final.toFixed(2)}\n   Subtotal: $${subtotal.toFixed(2)}\n\n`; }
-        msg+=`💰 *TOTAL: $${total.toFixed(2)}*\n\n📅 DÍAS DE PEDIDO: Lunes, Martes y Miércoles\n🚚 ENTREGAS: Viernes y Sábados (9:00 AM - 6:30 PM)\n\n📍 Envío a acordar\n📞 Gracias por tu compra.`;
-        const telefono=productos[0]?.telefono||"522282877441";
-        window.open(`https://wa.me/${telefono}?text=${encodeURIComponent(msg)}`,'_blank');
-    }
-    function agregarProducto(){ let nuevoId=Date.now().toString(); productos.push({id:nuevoId, codigo:"NUEVO-001", categoria:"General", titulo:"Nuevo producto", descripcion:"Descripción aquí", precioLista:100, descuento:0, vigencia:"", unidad:"PIEZA", telefono:"522282877441", imagen:""}); guardarProductosEnLocal(); renderizarFiltros(); renderizarProductos(); renderizarCarrito(); }
-    function exportarJSON(){ let data=JSON.stringify(productos,null,2); let a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([data],{type:"application/json"})); a.download="productos_gaeto.json"; a.click(); alert("Archivo exportado. Guárdalo y súbelo a GitHub como 'productos.json'"); }
-    function importarJSON(file){ let reader=new FileReader(); reader.onload=e=>{ try{ let imp=JSON.parse(e.target.result); if(Array.isArray(imp)){ productos=imp; guardarProductosEnLocal(); renderizarFiltros(); renderizarProductos(); renderizarCarrito(); alert("Productos importados correctamente. Recuerda subir este archivo a GitHub como 'productos.json'."); } else throw new Error(); } catch(err){ alert("Archivo inválido"); } }; reader.readAsText(file); }
-    function reiniciar(){ if(confirm("¿Reiniciar catálogo?")){ productos=[{id:"1",codigo:"CUAD-001",categoria:"Papelería",titulo:"CUADERNO PROFESIONAL",descripcion:"Tapa dura, 200 hojas",precioLista:180,descuento:10,vigencia:"2026-07-15",unidad:"PIEZA",telefono:"522282877441",imagen:"https://images.pexels.com/photos/210309/pexels-photo-210309.jpeg?auto=compress&cs=tinysrgb&w=600"},{id:"2",codigo:"TAZA-002",categoria:"Regalos",titulo:"TAZA PERSONALIZADA",descripcion:"Cerámica 350ml",precioLista:120,descuento:0,vigencia:"",unidad:"PIEZA",telefono:"522282877441",imagen:"https://images.pexels.com/photos/1986124/pexels-photo-1986124.jpeg?auto=compress&cs=tinysrgb&w=600"},{id:"3",codigo:"TOAL-003",categoria:"Hogar",titulo:"TOALLAS PREMIUM",descripcion:"Juego 3 piezas",precioLista:450,descuento:15,vigencia:"2026-06-30",unidad:"JUEGO",telefono:"522282877441",imagen:"https://images.pexels.com/photos/4289419/pexels-photo-4289419.jpeg?auto=compress&cs=tinysrgb&w=600"}]; carrito=[]; guardarProductosEnLocal(); guardarCarritoEnLocal(); renderizarFiltros(); renderizarProductos(); renderizarCarrito(); } }
-    function activarModoAdmin(){ if(!modoAdmin){ modoAdmin=true; document.body.classList.add('modo-admin'); document.body.classList.remove('modo-cliente'); document.getElementById('badgeAdmin').style.display='block'; document.getElementById('toolbar').style.display='flex'; renderizarProductos(); } }
-    function desactivarModoAdmin(){ modoAdmin=false; document.body.classList.remove('modo-admin'); document.body.classList.add('modo-cliente'); document.getElementById('badgeAdmin').style.display='none'; document.getElementById('toolbar').style.display='none'; renderizarProductos(); }
-    function toggleModo(){ if(modoAdmin) desactivarModoAdmin(); else activarModoAdmin(); }
-    let intentos=0;
-    document.getElementById('logoAdmin').addEventListener('click',()=>{ if(!modoAdmin){ let pwd=prompt("🔐 Acceso administrador. Introduce la contraseña:"); if(pwd===ADMIN_PASSWORD){ activarModoAdmin(); alert("Modo administrador activado."); } else { intentos++; if(intentos>=3) alert("Demasiados intentos fallidos. Recarga la página."); else alert(`Contraseña incorrecta. Te quedan ${3-intentos} intentos.`); } } else { alert("Ya estás en modo administrador. Usa 'VER COMO CLIENTE' para salir."); } });
-    cargarDatosLocales(); modoAdmin=false; document.body.classList.add('modo-cliente'); document.getElementById('toolbar').style.display='none'; document.getElementById('badgeAdmin').style.display='none'; renderizarFiltros(); renderizarProductos(); renderizarCarrito();
-    document.getElementById('toggleModoBtn').onclick=toggleModo; document.getElementById('agregarProductoBtn').onclick=agregarProducto; document.getElementById('exportarBtn').onclick=exportarJSON; document.getElementById('reiniciarBtn').onclick=reiniciar; document.getElementById('enviarPedidoBtn').onclick=enviarPedido; document.getElementById('vaciarCarritoBtn').onclick=()=>{ carrito=[]; guardarCarritoEnLocal(); renderizarCarrito(); }; document.getElementById('importarInput').onchange=e=>{ if(e.target.files.length) importarJSON(e.target.files[0]); e.target.value=''; };
+const ADMIN_PASSWORD="1310";
+let productos=[
+{id:"1",codigo:"CUAD-001",categoria:"Papelería",titulo:"CUADERNO PROFESIONAL",descripcion:"Tapa dura, 200 hojas",precioLista:180,descuento:10,vigencia:"2026-07-15",unidad:"PIEZA",telefono:"522282877441",imagen:"https://images.pexels.com/photos/210309/pexels-photo-210309.jpeg?auto=compress&cs=tinysrgb&w=600"},
+{id:"2",codigo:"TAZA-002",categoria:"Regalos",titulo:"TAZA PERSONALIZADA",descripcion:"Cerámica 350ml",precioLista:120,descuento:0,vigencia:"",unidad:"PIEZA",telefono:"522282877441",imagen:"https://images.pexels.com/photos/1986124/pexels-photo-1986124.jpeg?auto=compress&cs=tinysrgb&w=600"},
+{id:"3",codigo:"TOAL-003",categoria:"Hogar",titulo:"TOALLAS PREMIUM",descripcion:"Juego 3 piezas",precioLista:450,descuento:15,vigencia:"2026-06-30",unidad:"JUEGO",telefono:"522282877441",imagen:"https://images.pexels.com/photos/4289419/pexels-photo-4289419.jpeg?auto=compress&cs=tinysrgb&w=600"}
+];
+let carrito=[],modoAdmin=false,categoriaActiva="TODOS";
+function guardarProductos(){localStorage.setItem('productos_gaeto',JSON.stringify(productos));}
+function guardarCarrito(){localStorage.setItem('carrito_gaeto',JSON.stringify(carrito));}
+function cargarDatos(){let p=localStorage.getItem('productos_gaeto');let c=localStorage.getItem('carrito_gaeto');if(p)productos=JSON.parse(p);if(c)carrito=JSON.parse(c);}
+function precioFinal(p){return p.precioLista-(p.precioLista*p.descuento/100);}
+function formatearFecha(f){if(!f)return "";let partes=f.split('-');return partes.length===3?`${partes[2]}/${partes[1]}/${partes[0]}`:f;}
+function obtenerCategorias(){return[...new Set(productos.map(p=>p.categoria).filter(c=>c&&c.trim()!=""))];}
+function renderizarFiltros(){let cats=["TODOS",...obtenerCategorias()];let html=cats.map(c=>`<button class="filtro-btn ${categoriaActiva===c?'activo':''}" data-categoria="${c}">${c}</button>`).join('');document.getElementById('filtroCategorias').innerHTML=html;document.querySelectorAll('.filtro-btn').forEach(btn=>btn.onclick=()=>{categoriaActiva=btn.dataset.categoria;renderizarFiltros();renderizarProductos();});}
+function renderizarProductos(){let filtrados=categoriaActiva==="TODOS"?productos:productos.filter(p=>p.categoria===categoriaActiva);const contenedor=document.getElementById('contenedorProductos');contenedor.innerHTML='';if(filtrados.length===0){contenedor.innerHTML='<div style="padding:40px;text-align:center">📭 No hay productos</div>';return;}for(let p of filtrados){const final=precioFinal(p);const tieneDesc=p.descuento>0;const imgHtml=p.imagen?`<img src="${p.imagen}">`:`<div class="sin-imagen">📷 Sin imagen</div>`;const fechaVig=p.vigencia?formatearFecha(p.vigencia):"";const promoTag=tieneDesc?`<div class="etiqueta-promo">🔥 ${p.descuento}% OFF ${fechaVig?`<span class="vigencia">Válido hasta: ${fechaVig}</span>`:''}</div>`:'';const div=document.createElement('div');div.className='producto';div.innerHTML=`${promoTag}<div class="imagen-area">${imgHtml}</div><div class="info"><div class="codigo">📦 ${p.codigo||'Sin código'}</div><div class="titulo">${p.titulo}</div><div class="descripcion">${p.descripcion}</div><div class="precio">${tieneDesc?`<span class="precio-antes">$${p.precioLista.toFixed(2)}</span>`:''}$${final.toFixed(2)} / ${p.unidad}</div><div class="categoria-texto">📁 ${p.categoria||'General'}</div><div class="acciones"><input type="number" id="cant-${p.id}" value="1" min="1"><button class="agregar-carrito" data-id="${p.id}">➕ Agregar</button><a href="https://wa.me/${p.telefono}?text=${encodeURIComponent(`Hola, me interesa: ${p.titulo} - $${final.toFixed(2)}`)}" target="_blank" class="btn-wa">💬 WhatsApp</a></div><div class="editor-area"><div class="campo-row"><label>🔢 Código:</label><input type="text" id="codigoInput-${p.id}" value="${p.codigo||''}"></div><div class="campo-row"><label>📂 Categoría:</label><input type="text" id="categoriaInput-${p.id}" value="${p.categoria||''}"></div><div class="campo-row"><label>🏷️ % Promoción:</label><input type="number" id="descuentoInput-${p.id}" value="${p.descuento}" min="0" max="100"></div><div class="campo-row"><label>📅 Vigencia (YYYY-MM-DD):</label><input type="date" id="vigenciaInput-${p.id}" value="${p.vigencia||''}"></div><div class="campo-row"><label>🖼️ URL imagen:</label><input type="text" id="urlInput-${p.id}" value="${p.imagen||''}"></div><button class="btn-guardar" data-id="${p.id}">💾 GUARDAR</button><button class="btn-subir-archivo" data-id="${p.id}">📂 Subir imagen</button><div class="botones-edicion"><button class="btn-editar" data-id="${p.id}">✏️ Editar otros</button><button class="btn-eliminar" data-id="${p.id}">🗑 Eliminar</button></div></div></div>`;contenedor.appendChild(div);}document.querySelectorAll('.agregar-carrito').forEach(btn=>btn.onclick=()=>{let id=btn.dataset.id;let cant=parseInt(document.getElementById(`cant-${id}`).value)||1;agregarAlCarrito(id,cant);});if(modoAdmin){document.querySelectorAll('.btn-guardar').forEach(btn=>btn.onclick=()=>{let id=btn.dataset.id;let prod=productos.find(p=>p.id===id);if(prod){prod.codigo=document.getElementById(`codigoInput-${id}`)?.value.trim()||'';prod.categoria=document.getElementById(`categoriaInput-${id}`)?.value.trim()||'General';prod.descuento=parseFloat(document.getElementById(`descuentoInput-${id}`)?.value)||0;prod.vigencia=document.getElementById(`vigenciaInput-${id}`)?.value||'';prod.imagen=document.getElementById(`urlInput-${id}`)?.value.trim()||'';guardarProductos();renderizarFiltros();renderizarProductos();renderizarCarrito();}});document.querySelectorAll('.btn-subir-archivo').forEach(btn=>btn.onclick=()=>{let id=btn.dataset.id;let input=document.createElement('input');input.type='file';input.accept='image/*';input.onchange=e=>{let file=e.target.files[0];if(file){let reader=new FileReader();reader.onload=ev=>{let base64=ev.target.result;let prod=productos.find(p=>p.id===id);if(prod)prod.imagen=base64;guardarProductos();renderizarProductos();renderizarCarrito();};reader.readAsDataURL(file);}};input.click();});document.querySelectorAll('.btn-editar').forEach(btn=>btn.onclick=()=>{let id=btn.dataset.id;let prod=productos.find(p=>p.id===id);if(!prod)return;prod.titulo=prompt("Título:",prod.titulo)||prod.titulo;prod.descripcion=prompt("Descripción:",prod.descripcion)||prod.descripcion;let np=parseFloat(prompt("Precio lista:",prod.precioLista));if(!isNaN(np))prod.precioLista=np;prod.unidad=prompt("Unidad:",prod.unidad)||prod.unidad;guardarProductos();renderizarProductos();renderizarCarrito();});document.querySelectorAll('.btn-eliminar').forEach(btn=>btn.onclick=()=>{if(confirm("¿Eliminar?")){let id=btn.dataset.id;productos=productos.filter(p=>p.id!==id);carrito=carrito.filter(c=>c.id!==id);guardarProductos();guardarCarrito();renderizarFiltros();renderizarProductos();renderizarCarrito();}});}}
+function agregarAlCarrito(id,cantidad){let exist=carrito.find(c=>c.id===id);if(exist)exist.cantidad+=cantidad;else carrito.push({id,cantidad});guardarCarrito();renderizarCarrito();}
+function renderizarCarrito(){const lista=document.getElementById('carritoLista');const totalDiv=document.getElementById('totalCarrito');if(carrito.length===0){lista.innerHTML='<div style="padding:10px">🛍️ Carrito vacío</div>';totalDiv.innerHTML='Total: $0.00';return;}let total=0,html='';for(let item of carrito){const prod=productos.find(p=>p.id===item.id);if(!prod)continue;const final=precioFinal(prod);const subtotal=final*item.cantidad;total+=subtotal;html+=`<div class="carrito-item"><span><strong>${prod.titulo}</strong> x${item.cantidad}<br><span style="font-size:10px">Cód: ${prod.codigo||'N/A'}</span></span><span>$${subtotal.toFixed(2)} <button class="quitar-item" data-id="${item.id}">🗑</button></span></div>`;}lista.innerHTML=html;totalDiv.innerHTML=`Total: $${total.toFixed(2)}`;document.querySelectorAll('.quitar-item').forEach(btn=>btn.onclick=()=>{carrito=carrito.filter(i=>i.id!==btn.dataset.id);guardarCarrito();renderizarCarrito();});}
+function enviarPedido(){if(carrito.length===0){alert("Carrito vacío");return;}let msg="🛒 *MI PEDIDO GAETO:*\n\n";let total=0;for(let item of carrito){const prod=productos.find(p=>p.id===item.id);if(!prod)continue;const final=precioFinal(prod);const subtotal=final*item.cantidad;total+=subtotal;msg+=`📦 ${prod.titulo}\n   Código: ${prod.codigo||'N/A'}\n   Cantidad: ${item.cantidad} ${prod.unidad}\n   Precio unit: $${final.toFixed(2)}\n   Subtotal: $${subtotal.toFixed(2)}\n\n`;}msg+=`💰 *TOTAL: $${total.toFixed(2)}*\n\n📅 DÍAS DE PEDIDO: Lunes, Martes y Miércoles\n🚚 ENTREGAS: Viernes y Sábados (9:00 AM - 6:30 PM)\n\n📍 Envío a acordar\n📞 Gracias por tu compra.`;const telefono=productos[0]?.telefono||"522282877441";window.open(`https://wa.me/${telefono}?text=${encodeURIComponent(msg)}`,'_blank');}
+function agregarProducto(){let nuevoId=Date.now().toString();productos.push({id:nuevoId,codigo:"NUEVO-001",categoria:"General",titulo:"Nuevo producto",descripcion:"Descripción aquí",precioLista:100,descuento:0,vigencia:"",unidad:"PIEZA",telefono:"522282877441",imagen:""});guardarProductos();renderizarFiltros();renderizarProductos();renderizarCarrito();}
+function exportarJSON(){let data=JSON.stringify(productos,null,2);let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type:"application/json"}));a.download="productos_gaeto.json";a.click();alert("Archivo exportado. Súbelo a GitHub como 'productos.json' si quieres compartir los cambios.");}
+function importarJSON(file){let reader=new FileReader();reader.onload=e=>{try{let imp=JSON.parse(e.target.result);if(Array.isArray(imp)){productos=imp;guardarProductos();renderizarFiltros();renderizarProductos();renderizarCarrito();alert("Productos importados correctamente.");}else throw new Error();}catch(err){alert("Archivo inválido");}};reader.readAsText(file);}
+function reiniciar(){if(confirm("¿Reiniciar catálogo?")){productos=[{id:"1",codigo:"CUAD-001",categoria:"Papelería",titulo:"CUADERNO PROFESIONAL",descripcion:"Tapa dura, 200 hojas",precioLista:180,descuento:10,vigencia:"2026-07-15",unidad:"PIEZA",telefono:"522282877441",imagen:"https://images.pexels.com/photos/210309/pexels-photo-210309.jpeg?auto=compress&cs=tinysrgb&w=600"},{id:"2",codigo:"TAZA-002",categoria:"Regalos",titulo:"TAZA PERSONALIZADA",descripcion:"Cerámica 350ml",precioLista:120,descuento:0,vigencia:"",unidad:"PIEZA",telefono:"522282877441",imagen:"https://images.pexels.com/photos/1986124/pexels-photo-1986124.jpeg?auto=compress&cs=tinysrgb&w=600"},{id:"3",codigo:"TOAL-003",categoria:"Hogar",titulo:"TOALLAS PREMIUM",descripcion:"Juego 3 piezas",precioLista:450,descuento:15,vigencia:"2026-06-30",unidad:"JUEGO",telefono:"522282877441",imagen:"https://images.pexels.com/photos/4289419/pexels-photo-4289419.jpeg?auto=compress&cs=tinysrgb&w=600"}];carrito=[];guardarProductos();guardarCarrito();renderizarFiltros();renderizarProductos();renderizarCarrito();}}
+function activarModoAdmin(){if(!modoAdmin){modoAdmin=true;document.body.classList.add('modo-admin');document.body.classList.remove('modo-cliente');document.getElementById('badgeAdmin').style.display='block';document.getElementById('toolbar').style.display='flex';renderizarProductos();}}
+function desactivarModoAdmin(){modoAdmin=false;document.body.classList.remove('modo-admin');document.body.classList.add('modo-cliente');document.getElementById('badgeAdmin').style.display='none';document.getElementById('toolbar').style.display='none';renderizarProductos();}
+function toggleModo(){if(modoAdmin)desactivarModoAdmin();else activarModoAdmin();}
+let intentos=0;document.getElementById('logoAdmin').addEventListener('click',()=>{if(!modoAdmin){let pwd=prompt("🔐 Contraseña:");if(pwd===ADMIN_PASSWORD){activarModoAdmin();alert("Modo admin activado.");}else{intentos++;if(intentos>=3)alert("Demasiados fallos.");else alert(`Contraseña incorrecta. Quedan ${3-intentos} intentos.`);}}else{alert("Ya estás en modo admin. Usa 'VER COMO CLIENTE' para salir.");}});
+cargarDatos();modoAdmin=false;document.body.classList.add('modo-cliente');document.getElementById('toolbar').style.display='none';document.getElementById('badgeAdmin').style.display='none';renderizarFiltros();renderizarProductos();renderizarCarrito();
+document.getElementById('toggleModoBtn').onclick=toggleModo;document.getElementById('agregarProductoBtn').onclick=agregarProducto;document.getElementById('exportarBtn').onclick=exportarJSON;document.getElementById('reiniciarBtn').onclick=reiniciar;document.getElementById('enviarPedidoBtn').onclick=enviarPedido;document.getElementById('vaciarCarritoBtn').onclick=()=>{carrito=[];guardarCarrito();renderizarCarrito();};document.getElementById('importarInput').onchange=e=>{if(e.target.files.length)importarJSON(e.target.files[0]);e.target.value='';};
 </script>
 </body>
 </html>
