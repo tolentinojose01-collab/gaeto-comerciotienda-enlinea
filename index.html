@@ -2,17 +2,16 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GAETO COMERCIOS - Catálogo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>GAETO COMERCIOS | Promociones y carrito</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
             background: #eef2f5;
             padding: 20px;
             padding-bottom: 140px;
         }
-        /* Encabezado con logo */
         .encabezado {
             text-align: center;
             margin-bottom: 25px;
@@ -20,12 +19,7 @@
             border-radius: 40px;
             padding: 15px;
         }
-        .logo {
-            max-width: 250px;
-            width: 80%;
-            height: auto;
-        }
-        /* Barra de herramientas */
+        .logo { max-width: 250px; width: 80%; height: auto; }
         .toolbar {
             background: #1e2a3e;
             padding: 12px;
@@ -49,15 +43,56 @@
             font-size: 13px;
         }
         .toolbar .danger { background: #b91c1c; }
-        /* Producto */
+        .filtro-categorias {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        .filtro-btn {
+            background: #e2e8f0;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .filtro-btn.activo { background: #002b5c; color: white; }
         .producto {
             background: white;
             border-radius: 28px;
             margin-bottom: 30px;
             overflow: hidden;
             box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            position: relative;
         }
-        /* Contenedor de imagen - fondo blanco y altura fija */
+        .etiqueta-promo {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #e11d48;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 14px;
+            z-index: 10;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        .vigencia {
+            font-size: 11px;
+            display: block;
+            margin-top: 3px;
+            opacity: 0.9;
+        }
+        .codigo-producto {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+            font-family: monospace;
+        }
         .imagen-area {
             width: 100%;
             background: white;
@@ -67,37 +102,20 @@
             height: 280px;
             border-bottom: 1px solid #e2e8f0;
         }
-        .imagen-area img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
-        .sin-imagen {
-            color: #94a3b8;
-            text-align: center;
-        }
-        .info {
-            padding: 20px;
-        }
-        .titulo {
-            font-size: 1.6rem;
-            font-weight: bold;
-        }
-        .descripcion {
-            color: #334155;
-            margin: 10px 0;
-        }
-        .precio {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #002b5c;
-            margin: 10px 0;
-        }
-        .precio-antes {
-            text-decoration: line-through;
-            font-size: 1rem;
-            color: #888;
-            margin-right: 8px;
+        .imagen-area img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .sin-imagen { color: #94a3b8; text-align: center; }
+        .info { padding: 20px; }
+        .titulo { font-size: 1.6rem; font-weight: bold; }
+        .descripcion { color: #334155; margin: 10px 0; }
+        .precio { font-size: 1.8rem; font-weight: bold; color: #002b5c; margin: 10px 0; }
+        .precio-antes { text-decoration: line-through; font-size: 1rem; color: #888; margin-right: 8px; }
+        .categoria-texto {
+            display: inline-block;
+            background: #e2e8f0;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 8px;
         }
         .acciones {
             display: flex;
@@ -105,118 +123,61 @@
             margin: 15px 0;
             flex-wrap: wrap;
         }
-        .acciones input {
-            width: 70px;
-            padding: 8px;
-            border-radius: 30px;
-            border: 1px solid #ccc;
-            text-align: center;
-        }
-        .btn-agregar {
-            background: #ff9800;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 30px;
-            cursor: pointer;
-            flex: 1;
-        }
-        .btn-wa {
-            background: #25d366;
-            color: white;
-            text-decoration: none;
-            text-align: center;
-            padding: 8px 15px;
-            border-radius: 30px;
-            flex: 1;
-        }
+        .acciones input { width: 70px; padding: 8px; border-radius: 30px; border: 1px solid #ccc; text-align: center; }
+        .btn-agregar { background: #ff9800; color: white; border: none; padding: 8px 15px; border-radius: 30px; cursor: pointer; flex: 1; }
+        .btn-wa { background: #25d366; color: white; text-decoration: none; text-align: center; padding: 8px 15px; border-radius: 30px; flex: 1; }
         .editor-area {
             margin-top: 20px;
             border-top: 1px solid #ddd;
             padding-top: 15px;
         }
-        .campo-url input {
-            width: 100%;
-            padding: 10px;
-            border-radius: 30px;
-            border: 1px solid #ccc;
-            margin: 8px 0;
-        }
-        .btn-guardar-url, .btn-subir-archivo {
+        .campo-row { margin-bottom: 12px; }
+        .campo-row label { font-weight: bold; display: block; margin-bottom: 5px; font-size: 13px; }
+        .campo-row input { width: 100%; padding: 10px; border-radius: 30px; border: 1px solid #ccc; }
+        .btn-guardar {
             background: #2563eb;
             color: white;
             border: none;
-            padding: 8px;
+            padding: 10px;
             border-radius: 30px;
             width: 100%;
             margin-bottom: 8px;
             cursor: pointer;
+            font-weight: bold;
         }
         .btn-subir-archivo { background: #16a34a; }
-        .botones-edicion {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .btn-editar, .btn-eliminar {
-            flex: 1;
-            padding: 8px;
-            border-radius: 30px;
-            border: none;
-            color: white;
-            cursor: pointer;
-        }
+        .botones-edicion { display: flex; gap: 10px; margin-top: 10px; }
+        .btn-editar, .btn-eliminar { flex: 1; padding: 8px; border-radius: 30px; border: none; color: white; cursor: pointer; }
         .btn-editar { background: #334155; }
         .btn-eliminar { background: #b91c1c; }
-        .modo-cliente .toolbar, .modo-cliente .editor-area {
-            display: none !important;
-        }
+        .modo-cliente .toolbar, .modo-cliente .editor-area { display: none !important; }
         #botonEmergencia {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #ef4444;
-            color: white;
-            border: none;
-            border-radius: 30px;
-            padding: 8px 15px;
-            cursor: pointer;
-            display: none;
-            z-index: 1000;
+            position: fixed; bottom: 20px; right: 20px; background: #ef4444; color: white;
+            border: none; border-radius: 30px; padding: 8px 15px; cursor: pointer; display: none; z-index: 1000;
         }
         .carrito-panel {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: #1e293b;
-            color: white;
-            padding: 15px;
-            border-radius: 20px 20px 0 0;
-            max-height: 45vh;
-            overflow-y: auto;
+            position: fixed; bottom: 0; left: 0; right: 0; background: #1e293b; color: white;
+            padding: 15px; border-radius: 20px 20px 0 0; max-height: 45vh; overflow-y: auto;
         }
-        .carrito-item {
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 1px solid #475569;
-            padding: 6px 0;
-        }
-        .total-carrito {
-            text-align: right;
-            font-size: 1.3rem;
-            margin: 10px 0;
-        }
-        footer {
-            background: #0f172a;
-            color: white;
-            text-align: center;
-            padding: 20px;
+        .carrito-item { display: flex; justify-content: space-between; border-bottom: 1px solid #475569; padding: 6px 0; }
+        .total-carrito { text-align: right; font-size: 1.3rem; margin: 10px 0; }
+        footer { background: #0f172a; color: white; text-align: center; padding: 20px; border-radius: 30px; margin-top: 30px; }
+        .info-entregas {
+            background: #1e2a3e;
+            color: #ffd966;
+            padding: 12px;
             border-radius: 30px;
-            margin-top: 30px;
+            margin-top: 15px;
+            font-size: 14px;
+            word-wrap: break-word;
+            white-space: normal;
+            text-align: center;
+            line-height: 1.4;
         }
         @media (max-width: 600px) {
             .imagen-area { height: 220px; }
+            .etiqueta-promo { padding: 5px 12px; font-size: 12px; }
+            .info-entregas { font-size: 11px; }
         }
     </style>
 </head>
@@ -234,6 +195,7 @@
     <button id="reiniciarBtn" class="danger">⚠️ REINICIAR</button>
 </div>
 
+<div class="filtro-categorias" id="filtroCategorias"></div>
 <div id="contenedorProductos"></div>
 
 <div id="carritoPanel" class="carrito-panel">
@@ -245,69 +207,125 @@
     <div id="totalCarrito" class="total-carrito">Total: $0.00</div>
     <button id="enviarPedidoBtn" style="background:#25d366; width:100%; padding:10px; border:none; border-radius:30px; font-weight:bold;">📲 ENVIAR PEDIDO</button>
 </div>
-
 <button id="botonEmergencia">🔓 SALIR CLIENTE</button>
 
 <footer>
     <p>✅ Envíos a todo el país | ✅ Atención personalizada</p>
     <p>📞 WhatsApp: 228 287 7441</p>
+    <div class="info-entregas">
+        📅 <strong>DÍAS DE PEDIDO:</strong> LUNES, MARTES Y MIÉRCOLES<br>
+        🚚 <strong>ENTREGAS:</strong> VIERNES Y SÁBADOS | ⏰ 9:00 AM - 6:30 PM
+    </div>
 </footer>
 
 <script>
-    // Productos de ejemplo (puedes editarlos después)
     let productos = [
-        { id: "1", titulo: "CUADERNO PROFESIONAL", descripcion: "Tapa dura, 200 hojas", precioLista: 180, descuento: 10, unidad: "PIEZA", telefono: "522282877441", imagen: "" },
-        { id: "2", titulo: "TAZA PERSONALIZADA", descripcion: "Cerámica 350ml", precioLista: 120, descuento: 0, unidad: "PIEZA", telefono: "522282877441", imagen: "" }
+        { id: "1", codigo: "CUAD-001", categoria: "Papelería", titulo: "CUADERNO PROFESIONAL", descripcion: "Tapa dura, 200 hojas", precioLista: 180, descuento: 10, vigencia: "2026-07-15", unidad: "PIEZA", telefono: "522282877441", imagen: "" },
+        { id: "2", codigo: "TAZA-002", categoria: "Regalos", titulo: "TAZA PERSONALIZADA", descripcion: "Cerámica 350ml", precioLista: 120, descuento: 0, vigencia: "", unidad: "PIEZA", telefono: "522282877441", imagen: "" },
+        { id: "3", codigo: "TOAL-003", categoria: "Hogar", titulo: "TOALLAS PREMIUM", descripcion: "Juego 3 piezas", precioLista: 450, descuento: 15, vigencia: "2026-06-30", unidad: "JUEGO", telefono: "522282877441", imagen: "" }
     ];
     let carrito = [];
     let modoCliente = false;
+    let categoriaActiva = "TODOS";
 
     function cargarDatos() {
-        let p = localStorage.getItem('productos_gaeto_recuperado');
-        let c = localStorage.getItem('carrito_gaeto_recuperado');
+        let p = localStorage.getItem('productos_promo_manual');
+        let c = localStorage.getItem('carrito_promo_manual');
         if (p) productos = JSON.parse(p);
         if (c) carrito = JSON.parse(c);
     }
     function guardarDatos() {
-        localStorage.setItem('productos_gaeto_recuperado', JSON.stringify(productos));
-        localStorage.setItem('carrito_gaeto_recuperado', JSON.stringify(carrito));
+        localStorage.setItem('productos_promo_manual', JSON.stringify(productos));
+        localStorage.setItem('carrito_promo_manual', JSON.stringify(carrito));
     }
     function precioFinal(p) { return p.precioLista - (p.precioLista * (p.descuento / 100)); }
-
+    function formatearFecha(fecha) {
+        if (!fecha) return "";
+        let partes = fecha.split('-');
+        if (partes.length === 3) return `${partes[2]}/${partes[1]}/${partes[0]}`;
+        return fecha;
+    }
+    function obtenerCategorias() {
+        let cats = productos.map(p => p.categoria).filter(c => c && c.trim() !== "");
+        return [...new Set(cats)];
+    }
+    function renderizarFiltros() {
+        let categorias = ["TODOS", ...obtenerCategorias()];
+        let html = categorias.map(cat => `<button class="filtro-btn ${categoriaActiva === cat ? 'activo' : ''}" data-categoria="${cat}">${cat}</button>`).join('');
+        document.getElementById('filtroCategorias').innerHTML = html;
+        document.querySelectorAll('.filtro-btn').forEach(btn => {
+            btn.onclick = () => {
+                categoriaActiva = btn.getAttribute('data-categoria');
+                renderizarFiltros();
+                renderizarProductos();
+            };
+        });
+    }
     function renderizarProductos() {
+        let productosFiltrados = categoriaActiva === "TODOS" ? productos : productos.filter(p => p.categoria === categoriaActiva);
         const contenedor = document.getElementById('contenedorProductos');
         contenedor.innerHTML = '';
-        for (let p of productos) {
+        if (productosFiltrados.length === 0) {
+            contenedor.innerHTML = '<div style="text-align:center; padding:40px;">📭 No hay productos en esta categoría.</div>';
+            return;
+        }
+        for (let p of productosFiltrados) {
             const final = precioFinal(p);
             const tieneDesc = p.descuento > 0;
             const imgHtml = p.imagen ? `<img src="${p.imagen}">` : `<div class="sin-imagen">📷 Sin imagen</div>`;
+            const fechaVigencia = p.vigencia ? formatearFecha(p.vigencia) : "";
+            const promoTag = tieneDesc ? `
+                <div class="etiqueta-promo">
+                    🔥 PROMOCIÓN ${p.descuento}% OFF
+                    ${fechaVigencia ? `<span class="vigencia">Válido hasta: ${fechaVigencia}</span>` : ''}
+                </div>
+            ` : '';
             const div = document.createElement('div');
             div.className = 'producto';
             div.innerHTML = `
+                ${promoTag}
                 <div class="imagen-area">${imgHtml}</div>
                 <div class="info">
+                    <div class="codigo-producto">📦 Código: ${p.codigo || 'Sin código'}</div>
                     <div class="titulo">${p.titulo}</div>
                     <div class="descripcion">${p.descripcion}</div>
                     <div class="precio">
                         ${tieneDesc ? `<span class="precio-antes">$${p.precioLista.toFixed(2)}</span>` : ''}
                         $${final.toFixed(2)} / ${p.unidad}
                     </div>
+                    <div class="categoria-texto">📁 ${p.categoria || 'General'}</div>
                     <div class="acciones">
                         <input type="number" id="cant-${p.id}" value="1" min="1">
                         <button class="agregar-carrito" data-id="${p.id}">➕ Agregar</button>
-                        <a href="https://wa.me/${p.telefono}?text=${encodeURIComponent(`Hola, me interesa ${p.titulo} - $${final.toFixed(2)}`)}" target="_blank" class="btn-wa">💬 WhatsApp</a>
+                        <a href="https://wa.me/${p.telefono}?text=${encodeURIComponent(`Hola, me interesa: ${p.titulo} (Código: ${p.codigo || 'N/A'}) - $${final.toFixed(2)} ${p.unidad}`)}" target="_blank" class="btn-wa">💬 WhatsApp</a>
                     </div>
                     ${!modoCliente ? `
                         <div class="editor-area">
-                            <div class="campo-url">
-                                <label>URL imagen:</label>
+                            <div class="campo-row">
+                                <label>🔢 Código del producto:</label>
+                                <input type="text" id="codigoInput-${p.id}" placeholder="Ej: PROD-001" value="${p.codigo || ''}">
+                            </div>
+                            <div class="campo-row">
+                                <label>📂 Categoría:</label>
+                                <input type="text" id="categoriaInput-${p.id}" placeholder="Papelería, Regalos..." value="${p.categoria || ''}">
+                            </div>
+                            <div class="campo-row">
+                                <label>🏷️ Porcentaje de PROMOCIÓN (ej: 5, 10, 15):</label>
+                                <input type="number" id="descuentoInput-${p.id}" placeholder="0 = sin promoción" value="${p.descuento}" min="0" max="100">
+                            </div>
+                            <div class="campo-row">
+                                <label>📅 Vigencia de la promoción (YYYY-MM-DD):</label>
+                                <input type="date" id="vigenciaInput-${p.id}" value="${p.vigencia || ''}">
+                            </div>
+                            <div class="campo-row">
+                                <label>🖼️ URL de la imagen:</label>
                                 <input type="text" id="urlInput-${p.id}" placeholder="https://..." value="${p.imagen || ''}">
                             </div>
-                            <button class="btn-guardar-url" data-id="${p.id}">💾 Guardar URL</button>
-                            <button class="btn-subir-archivo" data-id="${p.id}">📂 Subir imagen</button>
+                            <button class="btn-guardar" data-id="${p.id}">💾 GUARDAR CAMBIOS (promoción, código, categoría, imagen)</button>
+                            <button class="btn-subir-archivo" data-id="${p.id}">📂 Subir imagen desde PC</button>
                             <div class="botones-edicion">
-                                <button class="btn-editar" data-id="${p.id}">✏️ Editar</button>
-                                <button class="btn-eliminar" data-id="${p.id}">🗑 Eliminar</button>
+                                <button class="btn-editar" data-id="${p.id}">✏️ Editar otros datos (título, descripción, precio lista, unidad)</button>
+                                <button class="btn-eliminar" data-id="${p.id}">🗑 Eliminar producto</button>
                             </div>
                         </div>
                     ` : ''}
@@ -315,8 +333,6 @@
             `;
             contenedor.appendChild(div);
         }
-
-        // Eventos
         document.querySelectorAll('.agregar-carrito').forEach(btn => {
             btn.onclick = () => {
                 const id = btn.dataset.id;
@@ -325,24 +341,30 @@
             };
         });
         if (!modoCliente) {
-            document.querySelectorAll('.btn-guardar-url').forEach(btn => {
+            document.querySelectorAll('.btn-guardar').forEach(btn => {
                 btn.onclick = () => {
                     const id = btn.dataset.id;
-                    const url = document.getElementById(`urlInput-${id}`).value.trim();
                     const prod = productos.find(p => p.id === id);
-                    if (prod) prod.imagen = url;
-                    guardarDatos();
-                    renderizarProductos();
-                    renderizarCarrito();
+                    if (prod) {
+                        prod.codigo = document.getElementById(`codigoInput-${id}`)?.value.trim() || '';
+                        prod.categoria = document.getElementById(`categoriaInput-${id}`)?.value.trim() || 'General';
+                        prod.descuento = parseInt(document.getElementById(`descuentoInput-${id}`)?.value) || 0;
+                        prod.vigencia = document.getElementById(`vigenciaInput-${id}`)?.value || '';
+                        prod.imagen = document.getElementById(`urlInput-${id}`)?.value.trim() || '';
+                        guardarDatos();
+                        renderizarFiltros();
+                        renderizarProductos();
+                        renderizarCarrito();
+                    }
                 };
             });
             document.querySelectorAll('.btn-subir-archivo').forEach(btn => {
                 btn.onclick = () => {
                     const id = btn.dataset.id;
-                    const inputFile = document.createElement('input');
-                    inputFile.type = 'file';
-                    inputFile.accept = 'image/*';
-                    inputFile.onchange = e => {
+                    const fileInput = document.createElement('input');
+                    fileInput.type = 'file';
+                    fileInput.accept = 'image/*';
+                    fileInput.onchange = e => {
                         const file = e.target.files[0];
                         if (file) {
                             const reader = new FileReader();
@@ -357,7 +379,7 @@
                             reader.readAsDataURL(file);
                         }
                     };
-                    inputFile.click();
+                    fileInput.click();
                 };
             });
             document.querySelectorAll('.btn-editar').forEach(btn => {
@@ -365,13 +387,11 @@
                     const id = btn.dataset.id;
                     const prod = productos.find(p => p.id === id);
                     if (!prod) return;
-                    prod.titulo = prompt("Título:", prod.titulo) || prod.titulo;
-                    prod.descripcion = prompt("Descripción:", prod.descripcion) || prod.descripcion;
-                    let np = parseFloat(prompt("Precio:", prod.precioLista));
+                    prod.titulo = prompt("📝 Título:", prod.titulo) || prod.titulo;
+                    prod.descripcion = prompt("📄 Descripción:", prod.descripcion) || prod.descripcion;
+                    let np = parseFloat(prompt("💰 Precio de lista:", prod.precioLista));
                     if (!isNaN(np)) prod.precioLista = np;
-                    let nd = parseFloat(prompt("Descuento %:", prod.descuento));
-                    if (!isNaN(nd)) prod.descuento = nd;
-                    prod.unidad = prompt("Unidad:", prod.unidad) || prod.unidad;
+                    prod.unidad = prompt("📦 Unidad:", prod.unidad) || prod.unidad;
                     guardarDatos();
                     renderizarProductos();
                     renderizarCarrito();
@@ -379,11 +399,12 @@
             });
             document.querySelectorAll('.btn-eliminar').forEach(btn => {
                 btn.onclick = () => {
-                    if (confirm("¿Eliminar?")) {
+                    if (confirm("¿Eliminar este producto?")) {
                         const id = btn.dataset.id;
                         productos = productos.filter(p => p.id !== id);
                         carrito = carrito.filter(c => c.id !== id);
                         guardarDatos();
+                        renderizarFiltros();
                         renderizarProductos();
                         renderizarCarrito();
                     }
@@ -391,7 +412,6 @@
             });
         }
     }
-
     function agregarAlCarrito(id, cantidad) {
         const exist = carrito.find(c => c.id === id);
         if (exist) exist.cantidad += cantidad;
@@ -399,12 +419,11 @@
         guardarDatos();
         renderizarCarrito();
     }
-
     function renderizarCarrito() {
         const contenedor = document.getElementById('carritoLista');
         const totalDiv = document.getElementById('totalCarrito');
         if (carrito.length === 0) {
-            contenedor.innerHTML = '<div>🛍️ Carrito vacío</div>';
+            contenedor.innerHTML = '<div style="padding:10px;">🛍️ Carrito vacío</div>';
             totalDiv.innerHTML = 'Total: $0.00';
             return;
         }
@@ -416,7 +435,7 @@
             const final = precioFinal(prod);
             const subtotal = final * item.cantidad;
             total += subtotal;
-            html += `<div class="carrito-item"><span>${prod.titulo} x${item.cantidad}</span><span>$${subtotal.toFixed(2)} <button class="quitar-item" data-id="${item.id}">🗑</button></span></div>`;
+            html += `<div class="carrito-item"><span><strong>${prod.titulo}</strong> x${item.cantidad}<br><span style="font-size:11px;">Cód: ${prod.codigo || 'N/A'}</span></span><span>$${subtotal.toFixed(2)} <button class="quitar-item" data-id="${item.id}">🗑</button></span></div>`;
         }
         contenedor.innerHTML = html;
         totalDiv.innerHTML = `Total: $${total.toFixed(2)}`;
@@ -429,10 +448,9 @@
             };
         });
     }
-
     function enviarPedido() {
         if (carrito.length === 0) { alert("Carrito vacío"); return; }
-        let msg = "🛒 *PEDIDO:*\n";
+        let msg = "🛒 *MI PEDIDO GAETO:*\n\n";
         let total = 0;
         for (let item of carrito) {
             const prod = productos.find(p => p.id === item.id);
@@ -440,17 +458,21 @@
             const final = precioFinal(prod);
             const subtotal = final * item.cantidad;
             total += subtotal;
-            msg += `📦 ${prod.titulo} x${item.cantidad} = $${subtotal.toFixed(2)}\n`;
+            msg += `📦 ${prod.titulo}\n   Código: ${prod.codigo || 'N/A'}\n   Cantidad: ${item.cantidad} ${prod.unidad}\n   Precio unit: $${final.toFixed(2)}\n   Subtotal: $${subtotal.toFixed(2)}\n\n`;
         }
-        msg += `💰 TOTAL: $${total.toFixed(2)}`;
+        msg += `💰 *TOTAL: $${total.toFixed(2)}*\n\n📅 DÍAS DE PEDIDO: Lunes, Martes y Miércoles\n🚚 ENTREGAS: Viernes y Sábados (9:00 AM - 6:30 PM)\n\n📍 Envío a acordar\n📞 Gracias por tu compra.`;
         const telefono = productos[0]?.telefono || "522282877441";
         window.open(`https://wa.me/${telefono}?text=${encodeURIComponent(msg)}`, '_blank');
     }
-
     function agregarProducto() {
         const nuevoId = Date.now().toString();
-        productos.push({ id: nuevoId, titulo: "Nuevo producto", descripcion: "Descripción", precioLista: 100, descuento: 0, unidad: "PIEZA", telefono: "522282877441", imagen: "" });
+        productos.push({
+            id: nuevoId, codigo: "NUEVO-001", categoria: "General", titulo: "Nuevo producto",
+            descripcion: "Descripción aquí", precioLista: 100, descuento: 0, vigencia: "",
+            unidad: "PIEZA", telefono: "522282877441", imagen: ""
+        });
         guardarDatos();
+        renderizarFiltros();
         renderizarProductos();
         renderizarCarrito();
     }
@@ -471,9 +493,10 @@
                     productos = imp;
                     carrito = [];
                     guardarDatos();
+                    renderizarFiltros();
                     renderizarProductos();
                     renderizarCarrito();
-                    alert("Importado");
+                    alert("Importado correctamente.");
                 } else throw new Error();
             } catch(err) { alert("Archivo inválido"); }
         };
@@ -482,11 +505,13 @@
     function reiniciar() {
         if (confirm("¿Reiniciar catálogo?")) {
             productos = [
-                { id: "1", titulo: "CUADERNO PROFESIONAL", descripcion: "Tapa dura, 200 hojas", precioLista: 180, descuento: 10, unidad: "PIEZA", telefono: "522282877441", imagen: "" },
-                { id: "2", titulo: "TAZA PERSONALIZADA", descripcion: "Cerámica 350ml", precioLista: 120, descuento: 0, unidad: "PIEZA", telefono: "522282877441", imagen: "" }
+                { id: "1", codigo: "CUAD-001", categoria: "Papelería", titulo: "CUADERNO PROFESIONAL", descripcion: "Tapa dura, 200 hojas", precioLista: 180, descuento: 10, vigencia: "2026-07-15", unidad: "PIEZA", telefono: "522282877441", imagen: "" },
+                { id: "2", codigo: "TAZA-002", categoria: "Regalos", titulo: "TAZA PERSONALIZADA", descripcion: "Cerámica 350ml", precioLista: 120, descuento: 0, vigencia: "", unidad: "PIEZA", telefono: "522282877441", imagen: "" },
+                { id: "3", codigo: "TOAL-003", categoria: "Hogar", titulo: "TOALLAS PREMIUM", descripcion: "Juego 3 piezas", precioLista: 450, descuento: 15, vigencia: "2026-06-30", unidad: "JUEGO", telefono: "522282877441", imagen: "" }
             ];
             carrito = [];
             guardarDatos();
+            renderizarFiltros();
             renderizarProductos();
             renderizarCarrito();
         }
@@ -496,7 +521,6 @@
         document.body.classList.toggle('modo-cliente', modoCliente);
         document.getElementById('botonEmergencia').style.display = modoCliente ? 'block' : 'none';
         renderizarProductos();
-        renderizarCarrito();
     }
     function salirModoCliente() {
         if (modoCliente) {
@@ -504,10 +528,8 @@
             document.body.classList.remove('modo-cliente');
             document.getElementById('botonEmergencia').style.display = 'none';
             renderizarProductos();
-            renderizarCarrito();
         }
     }
-
     document.getElementById('toggleModoBtn').onclick = toggleModo;
     document.getElementById('agregarProductoBtn').onclick = agregarProducto;
     document.getElementById('exportarBtn').onclick = exportarJSON;
@@ -519,8 +541,8 @@
         if (e.target.files.length) importarJSON(e.target.files[0]);
         e.target.value = '';
     };
-
     cargarDatos();
+    renderizarFiltros();
     renderizarProductos();
     renderizarCarrito();
 </script>
