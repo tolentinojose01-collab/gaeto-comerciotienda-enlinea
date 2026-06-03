@@ -10,7 +10,7 @@
             font-family: 'Segoe UI', Roboto, sans-serif;
             background: #eef2f5;
             padding: 20px;
-            padding-bottom: 160px; /* espacio para el carrito */
+            padding-bottom: 180px; /* más espacio para que el carrito no tape contenido */
         }
         .encabezado {
             text-align: center;
@@ -32,7 +32,6 @@
             border-radius: 20px;
             display: none;
         }
-        /* Banner entregas - dos líneas seguras */
         .banner-entregas {
             background: #1e2a3e;
             color: #ffd966;
@@ -124,6 +123,7 @@
             padding: 4px 12px;
             border-radius: 20px;
             font-size: 11px;
+            margin-top: 5px;
         }
         .acciones {
             display: flex;
@@ -196,7 +196,7 @@
         .btn-eliminar { background: #b91c1c; }
         .modo-admin .toolbar { display: flex; }
         .modo-cliente .toolbar { display: none; }
-        /* Carrito flotante - ahora con número visible */
+        /* Carrito flotante */
         .carrito-panel {
             position: fixed;
             bottom: 0;
@@ -206,7 +206,7 @@
             color: white;
             padding: 15px;
             border-radius: 24px 24px 0 0;
-            max-height: 55vh;
+            max-height: 50vh;
             overflow-y: auto;
             z-index: 200;
             box-shadow: 0 -5px 15px rgba(0,0,0,0.3);
@@ -227,17 +227,18 @@
             background: #25d366;
             color: #000;
             text-align: center;
-            padding: 12px;
+            padding: 10px;
             border-radius: 60px;
             margin-top: 10px;
             font-weight: bold;
             text-decoration: none;
             display: block;
+            font-size: 14px;
         }
         @media (max-width: 600px) {
             .imagen-area { height: 200px; }
             .banner-entregas { font-size: 11px; padding: 8px; }
-            .telefono-carrito { font-size: 14px; padding: 10px; }
+            .telefono-carrito { font-size: 12px; padding: 8px; }
         }
         @media print {
             .toolbar, .acciones, .carrito-panel, .editor-area, .filtro-categorias { display: none !important; }
@@ -277,7 +278,6 @@
     <div id="carritoLista">🛍️ Vacío</div>
     <div id="totalCarrito" class="total-carrito">Total: $0.00</div>
     <button id="enviarPedidoBtn" style="background:#25d366; width:100%; padding:12px; border:none; border-radius:40px; font-weight:bold;">📲 ENVIAR PEDIDO POR WHATSAPP</button>
-    <!-- Número de teléfono visible y enlace directo -->
     <a href="https://wa.me/522282877441" target="_blank" class="telefono-carrito">📞 WhatsApp directo: 228 287 7441</a>
 </div>
 
